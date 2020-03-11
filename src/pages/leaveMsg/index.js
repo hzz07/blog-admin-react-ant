@@ -153,7 +153,9 @@ class TableList extends PureComponent {
       }
     });
   };
-}
 
 
+
 }
+
+export default TableList;
