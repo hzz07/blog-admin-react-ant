@@ -15,7 +15,6 @@ import styles from './index.less';
 class Workplace extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
-    console.log(this.props)
   }
   // renderActivities() {
   //   const {

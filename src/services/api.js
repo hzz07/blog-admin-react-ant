@@ -157,7 +157,7 @@ export async function getTimeAxisDetail(params) {
   });
 }
 
-export async function getMessageList() {
+export async function getMessageList(params) {
   return request(`/api/getMessageList?${stringify(params)}`);
 }
 

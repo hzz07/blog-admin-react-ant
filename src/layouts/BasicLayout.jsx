@@ -3,7 +3,7 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
+import ProLayout, { DefaultFooter,SettingDrawer } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
 import { Link } from 'umi';
 import { connect } from 'dva';
@@ -89,10 +89,15 @@ const BasicLayout = props => {
    */
 
   useEffect(() => {
+
     if (dispatch) {
+
       dispatch({
         type: 'user/fetchCurrent',
       });
+      dispatch({
+        type: 'setting/getSetting',
+      })
     }
   }, []);
   /**
@@ -115,7 +120,7 @@ const BasicLayout = props => {
     <ProLayout
       logo={logo}
       menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/home">
+        <Link to="/welcome/home">
           {logoDom}
           {titleDom}
         </Link>
@@ -156,6 +161,13 @@ const BasicLayout = props => {
       <Authorized authority={authorized.authority} noMatch={noMatch}>
         {children}
       </Authorized>
+      <SettingDrawer settings={settings} onSettingChange={(e)=>{
+        // console.log('rightProps',e);
+        dispatch({
+          type: 'settings/changeSetting',
+          payload:e
+        });
+      }}></SettingDrawer>
     </ProLayout>
   );
 };

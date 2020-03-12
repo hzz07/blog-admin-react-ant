@@ -92,14 +92,16 @@ class TableList extends PureComponent {
     this.handleChangeKeyWord = this.handleChangeKeyWord.bind(this);
     this.handleOk = this.handleOk.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.showReplayModal = this.showReplayModal.bind(this);
+    this.showReplyModal = this.showReplyModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleChangeState = this.handleChangeState.bind(this);
   };
+
   componentDidMount() {
     this.handleSearch(this.state.pageNum, this.state.pageSize);
   }
+
   handleChangeState(state) {
     this.setState(
       {
@@ -113,9 +115,10 @@ class TableList extends PureComponent {
 
   handleChangeKeyWord(event) {
     this.setState({
-      keyword: event.target.value,
+      keyWord: event.target.value,
     });
   }
+
   handleChangePageParam(pageNum, pageSize) {
     this.setState(
       {
@@ -127,6 +130,7 @@ class TableList extends PureComponent {
       }
     );
   }
+
   showReplyModal = (text, record) => {
     const { dispatch } = this.props;
     const params = {
@@ -154,7 +158,155 @@ class TableList extends PureComponent {
     });
   };
 
+  handleOk = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+  handleSearch = () => {
+    this.setState({
+      loading: true,
+    });
+    const {dispatch} = this.props;
+    const params = {
+      keyWord: this.state.keyWord,
+      state: this.state.state,
+      pageNum: this.state.pageNum,
+      pageSize: this.state.pageSize,
+    };
+    new Promise(resolve => {
+      dispatch({
+        type: 'message/queryMessage',
+        payload: {
+          resolve,
+          params,
+        },
+      });
+    }).then(res => {
+      // console.log('res :', res);
+      if (res.code === 0) {
+        this.setState({
+          loading: false,
+        });
+      } else {
+        notification.error({
+          message: res.message,
+        });
+      }
+    });
+  };
+  handleDelete = (text, record) => {
+    const {dispatch} = this.props;
+    const params = {
+      id: record._id,
+    };
+    new Promise(resolve => {
+      dispatch({
+        type: 'message/delMessage',
+        payload: {
+          resolve,
+          params,
+        },
+      });
+    }).then(res => {
+      // console.log('res :', res);
+      if (res.code === 0) {
+        notification.success({
+          message: res.message,
+        });
+        this.handleSearch(this.state.pageNum, this.state.pageSize);
+      } else {
+        notification.error({
+          message: res.message,
+        });
+      }
+    });
+  }
 
+  renderSimpleForm() {
+    return (
+      <Form layout="inline" style={{marginBottom: '20px'}}>
+        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+          <Col md={24} sm={24}>
+            <FormItem>
+              <Input
+                placeholder="留言内容"
+                value={this.state.keyword}
+                onChange={this.handleChangeKeyword}
+              />
+            </FormItem>
+
+            <Select
+              style={{width: 200, marginRight: 20}}
+              placeholder="选择状态"
+              onChange={this.handleChangeState}
+            >
+              <Select.Option value="">所有</Select.Option>
+              <Select.Option value="0">未处理</Select.Option>
+              <Select.Option value="1">已处理</Select.Option>
+            </Select>
+
+            <span>
+              <Button
+                onClick={this.handleSearch}
+                style={{marginTop: '3px'}}
+                type="primary"
+                icon="search"
+              >
+                Search
+              </Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    )
+  }
+
+  render() {
+    const {messageList, total} = this.props.message;
+    const {pageNum, pageSize} = this.state;
+    const pagination = {
+      total,
+      defaultCurrent: pageNum,
+      pageSize,
+      showSizeChanger: true,
+      onShowSizeChange: (current, pageSize) => {
+        // console.log('current, pageSize :', current, pageSize);
+        this.handleChangePageParam(current, pageSize);
+      },
+      onChange: (current, pageSize) => {
+        this.handleChangePageParam(current, pageSize);
+      },
+    }
+    return(
+      <PageHeaderWrapper title="留言管理">
+        <Card bordered={false}>
+          <div className="">
+            <div className="">{this.renderSimpleForm()}</div>
+            <Table
+              pagination={pagination}
+              loading={this.state.loading}
+              pagination={pagination}
+              rowKey={record => record._id}
+              columns={this.state.columns}
+              bordered
+              dataSource={messageList}
+            />
+          </div>
+        </Card>
+        <MessageComponent
+          visible={this.state.visible}
+          handleOk={this.handleOk}
+          handleCancel={this.handleCancel}
+        />
+      </PageHeaderWrapper>
+    )
+  }
 
 }
 
