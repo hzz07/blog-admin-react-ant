@@ -57,25 +57,19 @@ class TableList extends PureComponent {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
-
   componentDidMount() {
     this.handleSearch(this.state.pageNum, this.state.pageSize);
   }
-
-
   handleChange(event) {
     this.setState({
       name: event.target.value,
     });
   }
-
   handleDescChange(event) {
     this.setState({
       desc: event.target.value,
     });
   }
-
-
   handleChangekeyWord(event) {
     this.setState({
       keyWord: event.target.value,
@@ -93,13 +87,11 @@ class TableList extends PureComponent {
       },
     );
   }
-
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
-
   handleOk = () => {
     const { dispatch } = this.props;
     const params = {
@@ -133,13 +125,11 @@ class TableList extends PureComponent {
       }
     });
   };
-
   handleCancel = e => {
     this.setState({
       visible: false,
     });
   };
-
   handleSearch = () => {
     this.setState({
       loading: true,

@@ -52,7 +52,6 @@ class Workplace extends PureComponent {
   //     );
   //   });
   // }
-
   render() {
     const {
       currentUser,
