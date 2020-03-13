@@ -57,6 +57,7 @@ class TableList extends PureComponent {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
+  //组件加载时触发
   componentDidMount() {
     this.handleSearch(this.state.pageNum, this.state.pageSize);
   }
