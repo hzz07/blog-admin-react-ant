@@ -122,7 +122,7 @@ const BasicLayout = props => {
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/welcome/home">
           {logoDom}
-          {titleDom}
+          {<h1>blog Admin</h1>}
         </Link>
       )}
       onCollapse={handleMenuCollapse}

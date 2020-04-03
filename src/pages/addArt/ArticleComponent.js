@@ -115,11 +115,13 @@ class ArticleComponent extends React.Component {
     let originDefault = '原创';
     let stateDefault = '发布'; // 文章发布状态 => 0 草稿，1 发布
     let typeDefault = '普通文章'; // 文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍
+    let BannerDefault = '0';
     let categoryDefault = [];
     let tagsDefault = [];
     if (changeType) {
       originDefault = articleDetail.origin === 0 ? '原创' : '';
       stateDefault = articleDetail.state ? '已发布' : '草稿';
+      BannerDefault = articleDetail.banner =='0' ? '0' : '1'
       typeDefault =
         articleDetail.type === 1 ? '普通文章' : articleDetail.type === 2 ? '简历' : '管理员介绍';
       categoryDefault = this.props.categoryDefault;
@@ -193,6 +195,16 @@ class ArticleComponent extends React.Component {
             value={this.props.img_url}
             onChange={this.props.handleChangeImgUrl}
           />
+          <Select
+            style={{width: 200, marginLeft: 10, marginBottom: 20}}
+            placeholder="选择是否添加到banner列表"
+            defaultValue={BannerDefault}
+            onChange={this.props.handleChangeBanner}
+          >
+            {/* 0 否，1 是 */}
+            <Select.Option value="0">不添加到banner</Select.Option>
+            <Select.Option value="1">添加到banner</Select.Option>
+          </Select>
 
           <Select
             style={{ width: 200, marginTop: 20, marginBottom: 20 }}

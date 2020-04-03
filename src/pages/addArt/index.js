@@ -49,6 +49,7 @@ class AddArt extends React.Component {
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleChangeType = this.handleChangeType.bind(this);
     this.handleChangeState = this.handleChangeState.bind(this);
+    this.handleChangeBanner = this.handleChangeBanner.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -106,7 +107,12 @@ class AddArt extends React.Component {
       [event.target.name]: event.target.value,
     });
   }
-
+  //
+  handleChangeBanner(value){
+    this.setState({
+      banner: value
+    })
+  }
   // 选择文章标签
   handleTagChange(value) {
     const tags = value.join();
@@ -176,6 +182,7 @@ class AddArt extends React.Component {
       type: this.state.type,
       tags: this.state.tags,
       category: this.state.category,
+      banner:this.state.banner
     };
 
     new Promise(resolve => {
@@ -382,6 +389,16 @@ class AddArt extends React.Component {
             <Select.Option value="2">混合</Select.Option>
           </Select>
 
+          <Select
+            style={{width: 200, marginLeft: 10, marginBottom: 20}}
+            placeholder="选择是否添加到banner列表"
+            defaultValue="0"
+            onChange={this.handleChangeBanner}
+          >
+            {/* 0 否，1 是 */}
+            <Select.Option value="0">不添加到banner</Select.Option>
+            <Select.Option value="1">添加到banner</Select.Option>
+          </Select>
           <Select
             allowClear
             mode="multiple"

@@ -23,7 +23,7 @@ const AuthComponent = ({
       noMatch={isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/user/login" />}
     >
       {children}
-    </Authorized>
+    </Authorized> 
   );
 };
 
